@@ -141,3 +141,9 @@ To avoid charges, delete everything when done:
 - **OpenShift Virtualization** requires sufficiently large worker nodes (e.g., D8s_v5).
 - The monitoring script uses the **Log Analytics agent** for simplicity; switch to AMA/DCR for production.
 - For **high‑performance AI**, consider GPU workers and higher replica counts.
+- For script 03_rehl_vm.sh copy ypur keys to local machine for use later
+
+```bash
+  cp -v ~/.ssh/* /mnt/yourdrive/yourfolderpath/
+```
+  
