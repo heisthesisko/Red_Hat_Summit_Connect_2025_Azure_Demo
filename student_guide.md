@@ -8,30 +8,32 @@ This hands-off lab shows how to **migrate**, **modernize**, and **innovate with 
 
 ```mermaid
 flowchart LR
-    subgraph OnPrem [On-Prem / Legacy]
-        rhel[ RHEL 9 VM (Legacy App) ]
+    subgraph OnPrem["On-Prem / Legacy"]
+        rhel["RHEL 9 VM (Legacy App)"]
     end
-    subgraph Azure [Microsoft Azure]
-        subgraph ARO [Azure Red Hat OpenShift (ARO)]
-            direction TB
-            app[Modernized App (Container)]
-            model[AI Model API (Flask/Sklearn)]
-            vmworkload[VM via OpenShift Virtualization]
-        end
-        arc[Azure Arc]
-        mon[Azure Monitor (Log Analytics)]
-        def[Defender for Cloud]
-        sen[Microsoft Sentinel]
-        entra[Microsoft Entra ID]
-    end
-    dev[Engineer – VS Code & Ansible]
 
-    rhel -- "Arc agent" --> arc
-    ARO -. "optional Arc connect" .- arc
-    entra -- "SSO / OAuth" --> ARO
-    entra -- "SSO" --> rhel
-    ARO -- "Pod/Infra Logs" --> mon
-    rhel -- "Syslog/Metrics" --> mon
+    subgraph Azure["Microsoft Azure"]
+        subgraph ARO["Azure Red Hat OpenShift (ARO)"]
+            direction TB
+            app["Modernized App (Container)"]
+            model["AI Model API (Flask/Sklearn)"]
+            vmworkload["VM via OpenShift Virtualization"]
+        end
+        arc["Azure Arc"]
+        mon["Azure Monitor (Log Analytics)"]
+        def["Defender for Cloud"]
+        sen["Microsoft Sentinel"]
+        entra["Microsoft Entra ID"]
+    end
+
+    dev["Engineer – VS Code & Ansible"]
+
+    rhel -->|Arc agent| arc
+    ARO -. optional Arc connect .- arc
+    entra -->|SSO / OAuth| ARO
+    entra -->|SSO| rhel
+    ARO -->|Pod/Infra Logs| mon
+    rhel -->|Syslog/Metrics| mon
     mon --> sen
     ARO --> def
     rhel --> def
