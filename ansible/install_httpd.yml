@@ -1,0 +1,14 @@
+- name: Configure RHEL web server
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Install Apache HTTPD
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Ensure httpd is running and enabled
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true

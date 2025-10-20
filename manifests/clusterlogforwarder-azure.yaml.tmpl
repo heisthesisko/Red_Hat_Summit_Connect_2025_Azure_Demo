@@ -1,0 +1,17 @@
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  outputs:
+    - name: azure
+      type: azureMonitor
+      azureMonitor:
+        customerId: ${CUSTOMER_ID}
+        sharedKey:
+          key: ${SHARED_KEY}
+  pipelines:
+    - name: all-to-azure
+      inputRefs: [ application, infrastructure, audit ]
+      outputRefs: [ azure ]
