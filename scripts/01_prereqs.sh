@@ -11,8 +11,26 @@ for ns in Microsoft.RedHatOpenShift \
 done
 
 echo "==> Installing Azure CLI extensions (idempotent)"
-for ext in aro monitor connectedk8s k8s-configuration k8s-extension security sentinel; do
-  az extension add --name "$ext" --upgrade || true
+
+# Known good and supported extensions
+EXTS=(
+  aro
+  connectedk8s
+  k8s-configuration
+  k8s-extension
+  sentinel
+)
+
+for ext in "${EXTS[@]}"; do
+  if ! az extension show --name "$ext" >/dev/null 2>&1; then
+    echo "🔹 Installing extension: $ext"
+    az extension add --name "$ext" --upgrade --allow-preview true || echo "⚠️ Failed to install $ext, continuing..."
+  else
+    echo "🔹 Updating extension: $ext"
+    az extension update --name "$ext" || echo "⚠️ Failed to update $ext, continuing..."
+  fi
 done
+
+echo "==> Extension installation complete."
 
 echo "==> Prereqs complete."
